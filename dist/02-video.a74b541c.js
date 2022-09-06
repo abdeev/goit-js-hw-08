@@ -507,7 +507,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _player = require("@vimeo/player");
 var _playerDefault = parcelHelpers.interopDefault(_player);
 const iframe = document.querySelector("iframe");
-const player = new Vimeo.Player(iframe);
+const player = new (0, _playerDefault.default)(iframe);
 player.on("play", function() {
     console.log("played the video!");
 });
