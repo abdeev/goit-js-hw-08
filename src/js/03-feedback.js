@@ -1,4 +1,5 @@
 import localstorageService from './localstorage';
+const throttle = require('lodash.throttle')
 
 const formEl = document.querySelector('.feedback-form')
 const inputMailEl = document.querySelector('[name="email"]');
@@ -28,15 +29,14 @@ function onFieldInput(event) {
     const fieldName = target.name;
     const fieldMessage = target.value;
     inputState[fieldName] = fieldMessage;
-
-  localstorageService.save('feedback-form-state', inputState);
+    localstorageService.save('feedback-form-state', inputState);
 };
 function onBtnSubmit(event) {
     event.preventDefault();
+    console.log(localstorageService.load('feedback-form-state'));
+    formEl.reset();
     localstorageService.remove('feedback-form-state');
-    inputMailEl.value = "";
-    inputMessageEl.value = "";
-    console.log(inputState);
+    
 }
-formEl.addEventListener('input', onFieldInput);
+formEl.addEventListener('input', throttle(onFieldInput, 300));
 formEl.addEventListener('submit', onBtnSubmit);
