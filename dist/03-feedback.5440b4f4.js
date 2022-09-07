@@ -503,6 +503,101 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"eH52W":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _localstorage = require("./localstorage");
+var _localstorageDefault = parcelHelpers.interopDefault(_localstorage);
+const formEl = document.querySelector(".feedback-form");
+const inputMailEl = document.querySelector('[name="email"]');
+const inputMessageEl = document.querySelector('[name="message"]');
+const inputState = {};
+const fillInputFields = ()=>{
+    const inputFieldsLS = (0, _localstorageDefault.default).load("feedback-form-state");
+    if (!inputFieldsLS) return;
+    for(const prop in inputFieldsLS)if (inputFieldsLS.hasOwnProperty(prop)) {
+        formEl.elements[prop].value = inputFieldsLS[prop];
+        inputState[prop] = inputFieldsLS[prop];
+    }
+};
+fillInputFields();
+function onFieldInput(event) {
+    const { target  } = event;
+    const fieldName = target.name;
+    const fieldMessage = target.value;
+    inputState[fieldName] = fieldMessage;
+    (0, _localstorageDefault.default).save("feedback-form-state", inputState);
+}
+function onBtnSubmit(event) {
+    event.preventDefault();
+    (0, _localstorageDefault.default).remove("feedback-form-state");
+    inputMailEl.value = "";
+    inputMessageEl.value = "";
+    console.log(inputState);
+}
+formEl.addEventListener("input", onFieldInput);
+formEl.addEventListener("submit", onBtnSubmit);
+
+},{"./localstorage":"ejDaS","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ejDaS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+"use strict";
+const save = (key, value)=>{
+    try {
+        const serializedState = JSON.stringify(value);
+        localStorage.setItem(key, serializedState);
+    } catch (error) {
+        console.error("Set state error: ", error.message);
+    }
+};
+const load = (key)=>{
+    try {
+        const serializedState = localStorage.getItem(key);
+        return serializedState === null ? undefined : JSON.parse(serializedState);
+    } catch (error) {
+        console.error("Get state error: ", error.message);
+    }
+};
+const remove = (key)=>{
+    try {
+        localStorage.removeItem(key);
+    } catch (error) {
+        console.log("Remove item error: ", error.message);
+    }
+};
+exports.default = {
+    save,
+    load,
+    remove
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}]},["7Ih8d","eH52W"], "eH52W", "parcelRequired7c6")
 
